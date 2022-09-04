@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import { signIn } from 'next-auth/react';
 import Head from 'next/head';
 import { trpc } from '../utils/trpc';
 
@@ -14,6 +15,7 @@ const Home: NextPage = () => {
       </Head>
 
       <h1>{hello?.data?.greeting}</h1>
+      <button onClick={() => signIn()}>Sign In</button>
     </>
   );
 };
