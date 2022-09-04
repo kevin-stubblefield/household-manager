@@ -4,15 +4,15 @@ import Head from 'next/head';
 import { trpc } from '../utils/trpc';
 
 const AccountButton = () => {
-  const { data } = useSession();
+  const { data: session } = useSession();
 
-  if (!data) {
+  if (!session) {
     return <button onClick={() => signIn()}>Sign In</button>;
   }
 
   return (
     <div>
-      Hi, {data?.user?.name} |{' '}
+      Hi, {session?.user?.name} |{' '}
       <button onClick={() => signOut()}>Sign Out</button>
     </div>
   );
