@@ -1,10 +1,11 @@
 // src/pages/_app.tsx
-import { withTRPC } from "@trpc/next";
-import type { AppRouter } from "../server/router";
-import type { AppType } from "next/dist/shared/lib/utils";
-import superjson from "superjson";
-import { SessionProvider } from "next-auth/react";
-import "../styles/globals.css";
+import { withTRPC } from '@trpc/next';
+import type { AppRouter } from '../server/router';
+import type { AppType } from 'next/dist/shared/lib/utils';
+import superjson from 'superjson';
+import { SessionProvider } from 'next-auth/react';
+import '../styles/globals.css';
+import { httpBatchLink } from '@trpc/client/links/httpBatchLink';
 
 const MyApp: AppType = ({
   Component,
@@ -18,7 +19,7 @@ const MyApp: AppType = ({
 };
 
 const getBaseUrl = () => {
-  if (typeof window !== "undefined") return ""; // browser should use relative url
+  if (typeof window !== 'undefined') return ''; // browser should use relative url
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
@@ -31,8 +32,15 @@ export default withTRPC<AppRouter>({
      */
     const url = `${getBaseUrl()}/api/trpc`;
 
+    const links = [
+      httpBatchLink({
+        url,
+        maxBatchSize: 10,
+      }),
+    ];
+
     return {
-      url,
+      links,
       transformer: superjson,
       /**
        * @link https://react-query.tanstack.com/reference/QueryClient
