@@ -29,7 +29,7 @@ model Account {
   id_token          String? //@db.Text
   session_state     String?
 
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -40,20 +40,20 @@ model Session {
   userId       String
   expires      DateTime
 
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id            String      @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String?     @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
-  displayName String?
+  displayName   String?
 
-  accounts      Account[]
-  sessions      Session[]
-  households    Household[]
+  accounts          Account[]
+  sessions          Session[]
+  households        Household[]
   Task              Task[]
   HouseholdsOnUsers HouseholdsOnUsers[]
 }
@@ -72,16 +72,16 @@ model Household {
 
   addressLine1 String?
   addressLine2 String?
-  city String?
-  state String?
-  zipCode String?
+  city         String?
+  state        String?
+  zipCode      String?
 
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 
-  images Image[]
-  users User[]
-  tasks  Task[]
+  images            Image[]
+  users             User[]
+  tasks             Task[]
   HouseholdsOnUsers HouseholdsOnUsers[]
 }
 
@@ -118,8 +118,8 @@ model HouseholdsOnUsers {
 }
 
 model Image {
-    itemId String
-    url String @unique
+  itemId String
+  url    String @unique
 
-    household Household @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  household Household @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }

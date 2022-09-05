@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
+import Link from 'next/link';
+import { useState } from 'react';
 import { trpc } from '../utils/trpc';
 
 const AccountButton = () => {
@@ -11,27 +13,61 @@ const AccountButton = () => {
   }
 
   return (
-    <div>
+    <div className="p-2">
       Hi, {session?.user?.name} |{' '}
       <button onClick={() => signOut()}>Sign Out</button>
     </div>
   );
 };
 
-const Header = () => {
+const Sidebar = () => {
+  const [expanded, setExpanded] = useState(true);
+
+  function toggleExpanded() {
+    setExpanded(!expanded);
+  }
+
+  const baseStyles =
+    'flex flex-col top-0 left-0 h-screen bg-slate-800 text-white';
+  const expandedStyles = 'w-64';
+  const collapsedStyles = 'w-24';
+
+  const pages = [
+    { id: 1, name: 'Tasks', link: '/tasks' },
+    { id: 2, name: 'Groceries', link: '/groceries' },
+    { id: 3, name: 'Inventory', link: '/inventory' },
+  ];
+
   return (
-    <header className="container mx-auto p-4 flex">
-      <div className="flex-1">Home Manager</div>
+    <section
+      className={`${baseStyles} ${expanded ? expandedStyles : collapsedStyles}`}
+    >
+      <header className="flex mb-8 p-2">
+        <span className="flex-1">Home Manager</span>
+        <button className="inline-flex" onClick={toggleExpanded}>
+          {expanded ? '<-' : '->'}
+        </button>
+      </header>
+      <div className="flex-1 divide-y">
+        {pages.map((page) => (
+          <Link href={page.link}>
+            <div
+              key={page.id}
+              className="w-full p-4 cursor-pointer hover:bg-slate-600"
+            >
+              {page.name}
+            </div>
+          </Link>
+        ))}
+      </div>
       <div>
         <AccountButton />
       </div>
-    </header>
+    </section>
   );
 };
 
 const Home: NextPage = () => {
-  const hello = trpc.useQuery(['example.hello', { text: 'from tRPC' }]);
-
   return (
     <>
       <Head>
@@ -40,11 +76,11 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header></Header>
+      <div className="grid grid-flow-col">
+        <Sidebar />
 
-      <section className="container mx-auto">
-        <h1>{hello?.data?.greeting}</h1>
-      </section>
+        <section className="container mx-auto"></section>
+      </div>
     </>
   );
 };
