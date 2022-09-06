@@ -33,19 +33,39 @@ const Sidebar = () => {
   const collapsedStyles = 'w-24';
 
   const pages = [
-    { id: 1, name: 'Tasks', link: '/tasks' },
-    { id: 2, name: 'Groceries', link: '/groceries' },
-    { id: 3, name: 'Inventory', link: '/inventory' },
+    { id: 1, name: 'Tasks', link: '/tasks', icon: '/icons/calendar.svg' },
+    {
+      id: 2,
+      name: 'Groceries',
+      link: '/groceries',
+      icon: '/icons/list-check.svg',
+    },
+    { id: 3, name: 'Inventory', link: '/inventory', icon: '/icons/boxes.svg' },
   ];
 
   return (
     <section
-      className={`${baseStyles} ${expanded ? expandedStyles : collapsedStyles}`}
+      className={`${baseStyles} ${
+        expanded ? expandedStyles : collapsedStyles
+      } transition-all duration-300`}
     >
       <header className="flex mb-8 p-2">
         <span className="flex-1">Home Manager</span>
         <button className="inline-flex" onClick={toggleExpanded}>
-          {expanded ? '<-' : '->'}
+          <svg
+            className={`${
+              expanded ? 'rotate-180' : ''
+            } transition-all duration-[350ms] delay-[150ms]`}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="#ffffff"
+          >
+            <g id="_01_align_center" data-name="01 align center">
+              <path d="M7.412,24,6,22.588l9.881-9.881a1,1,0,0,0,0-1.414L6.017,1.431,7.431.017l9.862,9.862a3,3,0,0,1,0,4.242Z" />
+            </g>
+          </svg>
         </button>
       </header>
       <div className="flex-1 divide-y">
