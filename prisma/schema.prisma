@@ -56,6 +56,7 @@ model User {
   households        Household[]
   Task              Task[]
   HouseholdsOnUsers HouseholdsOnUsers[]
+  invited HouseholdsOnUsers[] @relation("invited")
 }
 
 model VerificationToken {
@@ -106,6 +107,9 @@ model Task {
 model HouseholdsOnUsers {
   householdId String
   userId      String
+  invitedById String
+  inviteAccepted Boolean
+  isOwner Boolean
 
   createdBy String?
   createdAt DateTime @default(now())
@@ -113,6 +117,7 @@ model HouseholdsOnUsers {
 
   household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invitedBy User? @relation("invited", fields: [invitedById], references: [id], onDelete: SetNull)
 
   @@id([householdId, userId])
 }
