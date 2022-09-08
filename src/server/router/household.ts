@@ -13,24 +13,42 @@ export const householdRouter = createRouter()
       zipCode: z.string().length(5, 'Zip Code must be five numbers long'),
     }),
     async resolve({ input, ctx }) {
-      const householdWithUser = Prisma;
       await prisma?.household.create({
         data: {
           ...input,
-          users: {
-            connect: { id: ctx.session?.user?.id },
+          householdsOnUsers: {
+            create: [
+              {
+                user: {
+                  connect: {
+                    id: ctx.session?.user?.id,
+                  },
+                },
+                createdBy: {
+                  connect: {
+                    id: ctx.session?.user?.id,
+                  },
+                },
+                isOwner: true,
+              },
+            ],
           },
         },
       });
     },
   })
-  .query('pages', {
-    input: z
-      .object({
-        role: z.string(),
-      })
-      .nullable(),
-    resolve({ input, ctx }) {
-      return {};
+  .query('my-households', {
+    async resolve({ ctx }) {
+      const households = await prisma?.household.findMany({
+        where: {
+          householdsOnUsers: {
+            every: {
+              userId: ctx.session?.user?.id,
+            },
+          },
+        },
+      });
+
+      return households;
     },
   });

@@ -4,6 +4,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
 import { trpc } from '../utils/trpc';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { CreateHouseholdInput } from '../schemas/household.schema';
 
 const AccountButton = () => {
   const { data: session } = useSession();
@@ -83,11 +85,8 @@ const Sidebar = () => {
       </header>
       <div className={`flex-1 ${expanded ? 'divide-y' : ''}`}>
         {pages.map((page) => (
-          <Link href={page.link}>
-            <div
-              key={page.id}
-              className="w-full p-4 cursor-pointer hover:bg-slate-600"
-            >
+          <Link key={page.id} href={page.link}>
+            <div className="w-full p-4 cursor-pointer hover:bg-slate-600">
               {page.icon}
               {expanded && <span className="ml-2">{page.name}</span>}
             </div>
@@ -158,6 +157,77 @@ const GroceriesIcon = ({ expanded }: IconProps) => {
   );
 };
 
+const HouseholdList = () => {
+  const [showAddHouseholdForm, setShowAddHouseholdForm] = useState(false);
+
+  const { register, handleSubmit } = useForm<CreateHouseholdInput>();
+
+  const { data, isLoading, error } = trpc.useQuery(['household.my-households']);
+  const { mutate } = trpc.useMutation(['household.create-household']);
+
+  const onSubmit: SubmitHandler<CreateHouseholdInput> = async (data, e) => {
+    e?.target.reset();
+    mutate(data);
+  };
+
+  const toggleShowAddHouseholdForm = () => {
+    setShowAddHouseholdForm(!showAddHouseholdForm);
+  };
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error loading households</p>;
+  }
+
+  return (
+    <section className="p-2">
+      <button onClick={toggleShowAddHouseholdForm}>
+        {showAddHouseholdForm ? 'Hide' : 'Add Household'}
+      </button>
+      {showAddHouseholdForm && (
+        <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
+          <input
+            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
+            placeholder="Household name"
+            {...register('name')}
+          />
+          <input
+            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
+            placeholder="Address line 1"
+            {...register('addressLine1')}
+          />
+          <input
+            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
+            placeholder="Address line 2"
+            {...register('addressLine2')}
+          />
+          <input
+            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
+            placeholder="City"
+            {...register('city')}
+          />
+          <input
+            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
+            placeholder="State"
+            {...register('state')}
+          />
+          <input
+            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
+            placeholder="Zip Code"
+            {...register('zipCode')}
+          />
+          <button type="submit">Add New Household</button>
+        </form>
+      )}
+      {data &&
+        data.map((household) => <h3 key={household.id}>{household.name}</h3>)}
+    </section>
+  );
+};
+
 const Home: NextPage = () => {
   return (
     <>
@@ -167,10 +237,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="grid grid-flow-col">
+      <div className="grid grid-flow-col place-content-start">
         <Sidebar />
-
-        <section className="container mx-auto"></section>
+        <HouseholdList />
       </div>
     </>
   );

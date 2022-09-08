@@ -53,10 +53,10 @@ model User {
 
   accounts          Account[]
   sessions          Session[]
-  households        Household[]
   Task              Task[]
   HouseholdsOnUsers HouseholdsOnUsers[]
   invited HouseholdsOnUsers[] @relation("invited")
+  created HouseholdsOnUsers[] @relation("created")
 }
 
 model VerificationToken {
@@ -81,9 +81,8 @@ model Household {
   updatedAt DateTime @default(now())
 
   images            Image[]
-  users             User[]
   tasks             Task[]
-  HouseholdsOnUsers HouseholdsOnUsers[]
+  householdsOnUsers HouseholdsOnUsers[]
 }
 
 model Task {
@@ -107,17 +106,18 @@ model Task {
 model HouseholdsOnUsers {
   householdId String
   userId      String
-  invitedById String
-  inviteAccepted Boolean
-  isOwner Boolean
+  createdById String?
+  invitedById String?
+  inviteAccepted Boolean?
+  isOwner Boolean @default(false)
 
-  createdBy String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
   household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   invitedBy User? @relation("invited", fields: [invitedById], references: [id], onDelete: SetNull)
+  createdBy User? @relation("created", fields: [createdById], references: [id], onDelete: SetNull)
 
   @@id([householdId, userId])
 }
