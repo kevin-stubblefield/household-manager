@@ -14,7 +14,7 @@ const AccountButton = () => {
 
   return (
     <div className="p-2">
-      Hi, {session?.user?.name} |{' '}
+      Hi, {session?.user?.name} |{` (${session?.user?.id}) `}
       <button onClick={() => signOut()}>Sign Out</button>
     </div>
   );
