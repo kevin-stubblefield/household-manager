@@ -19,8 +19,8 @@ const HouseholdList = () => {
     isLoading,
     error,
   } = trpc.useQuery(['household.my-households']);
-  const { mutate, data } = trpc.useMutation(['household.create-household'], {
-    onSuccess(input) {
+  const { mutate } = trpc.useMutation(['household.create-household'], {
+    onSuccess() {
       utils.invalidateQueries(['household.my-households']);
     },
   });
