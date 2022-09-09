@@ -3,7 +3,7 @@ import { createRouter } from './context';
 import superjson from 'superjson';
 
 import { protectedExampleRouter } from './protected-example-router';
-import { householdRouter } from './household';
+import { householdRouter } from './household.router';
 
 export const appRouter = createRouter()
   .transformer(superjson)

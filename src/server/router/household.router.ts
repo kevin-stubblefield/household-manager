@@ -13,7 +13,7 @@ export const householdRouter = createRouter()
       zipCode: z.string().length(5, 'Zip Code must be five numbers long'),
     }),
     async resolve({ input, ctx }) {
-      await prisma?.household.create({
+      const household = await prisma?.household.create({
         data: {
           ...input,
           householdsOnUsers: {
@@ -35,6 +35,8 @@ export const householdRouter = createRouter()
           },
         },
       });
+
+      return household;
     },
   })
   .query('my-households', {

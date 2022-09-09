@@ -10,15 +10,24 @@ import { Sidebar } from '../components/sidebar.component';
 
 const HouseholdList = () => {
   const [showAddHouseholdForm, setShowAddHouseholdForm] = useState(false);
+  const utils = trpc.useContext();
 
   const { register, handleSubmit } = useForm<CreateHouseholdInput>();
 
-  const { data, isLoading, error } = trpc.useQuery(['household.my-households']);
-  const { mutate } = trpc.useMutation(['household.create-household']);
+  const {
+    data: households,
+    isLoading,
+    error,
+  } = trpc.useQuery(['household.my-households']);
+  const { mutate, data } = trpc.useMutation(['household.create-household'], {
+    onSuccess(input) {
+      utils.invalidateQueries(['household.my-households']);
+    },
+  });
 
-  const onSubmit: SubmitHandler<CreateHouseholdInput> = async (data, e) => {
+  const onSubmit: SubmitHandler<CreateHouseholdInput> = async (values, e) => {
     e?.target.reset();
-    mutate(data);
+    await mutate(values);
   };
 
   const toggleShowAddHouseholdForm = () => {
@@ -73,8 +82,10 @@ const HouseholdList = () => {
           <button type="submit">Add New Household</button>
         </form>
       )}
-      {data &&
-        data.map((household) => <h3 key={household.id}>{household.name}</h3>)}
+      {households &&
+        households.map((household) => (
+          <h3 key={household.id}>{household.name}</h3>
+        ))}
     </section>
   );
 };
