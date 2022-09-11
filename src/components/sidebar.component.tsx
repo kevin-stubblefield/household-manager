@@ -19,14 +19,9 @@ export const AccountButton = () => {
 
 export const Sidebar = () => {
   const [expanded, setExpanded] = useState(true);
-  const [notificationPanelOpen, setNotificationPanelOpen] = useState(false);
 
   function toggleExpanded() {
     setExpanded(!expanded);
-  }
-
-  function toggleNotificationPanel() {
-    setNotificationPanelOpen(!notificationPanelOpen);
   }
 
   const baseStyles =
@@ -83,18 +78,6 @@ export const Sidebar = () => {
           </svg>
         </button>
       </header>
-      <div className="relative">
-        <button
-          onClick={toggleNotificationPanel}
-          name="notifications"
-          className="w-full p-4 cursor-pointer hover:bg-slate-600"
-        >
-          N
-        </button>
-        {notificationPanelOpen && (
-          <div className="absolute w-20 h-20 bg-slate-800 -right-20 top-0"></div>
-        )}
-      </div>
       <div className={`flex-1 ${expanded ? 'divide-y' : ''}`}>
         {pages.map((page) => (
           <Link key={page.id} href={page.link}>
