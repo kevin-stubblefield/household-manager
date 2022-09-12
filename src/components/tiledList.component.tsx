@@ -34,8 +34,8 @@ export const TiledList = ({ query, header }: TiledListProps) => {
               {item.images[0] && (
                 <img
                   className="float-right"
-                  src={item.images[0]?.url}
-                  alt={item.images[0].alt}
+                  src={item.images[0].url}
+                  alt={item.images[0].alt || 'Image of home'}
                 />
               )}
             </div>
