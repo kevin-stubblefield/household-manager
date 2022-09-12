@@ -1,123 +1,9 @@
 import type { NextPage } from 'next';
-import { signIn, signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
-import Link from 'next/link';
-import { useState } from 'react';
 import { trpc } from '../utils/trpc';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { CreateHouseholdInput } from '../schemas/household.schema';
 import { Sidebar } from '../components/sidebar.component';
-
-const InvitedList = () => {
-  const {
-    data: invited,
-    isLoading,
-    error,
-  } = trpc.useQuery(['household.invited']);
-
-  if (isLoading) {
-    return <p>Loading Invited</p>;
-  }
-
-  if (error) {
-    return <p>Error loading invited</p>;
-  }
-
-  return (
-    <>
-      <h3>Invites</h3>
-      {invited &&
-        invited.map((household) => (
-          <div key={household.id}>
-            {household.name} <button>Accept</button>&nbsp;
-            <button>Decline</button>
-          </div>
-        ))}
-    </>
-  );
-};
-
-const HouseholdList = () => {
-  const [showAddHouseholdForm, setShowAddHouseholdForm] = useState(false);
-  const utils = trpc.useContext();
-
-  const { register, handleSubmit } = useForm<CreateHouseholdInput>();
-
-  const {
-    data: households,
-    isLoading,
-    error,
-  } = trpc.useQuery(['household.my-households']);
-  const { mutate } = trpc.useMutation(['household.create-household'], {
-    onSuccess() {
-      utils.invalidateQueries(['household.my-households']);
-    },
-  });
-
-  const onSubmit: SubmitHandler<CreateHouseholdInput> = async (values, e) => {
-    e?.target.reset();
-    await mutate(values);
-  };
-
-  const toggleShowAddHouseholdForm = () => {
-    setShowAddHouseholdForm(!showAddHouseholdForm);
-  };
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error loading households</p>;
-  }
-
-  return (
-    <section className="p-2">
-      <button onClick={toggleShowAddHouseholdForm}>
-        {showAddHouseholdForm ? 'Hide' : 'Add Household'}
-      </button>
-      {showAddHouseholdForm && (
-        <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
-          <input
-            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
-            placeholder="Household name"
-            {...register('name')}
-          />
-          <input
-            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
-            placeholder="Address line 1"
-            {...register('addressLine1')}
-          />
-          <input
-            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
-            placeholder="Address line 2"
-            {...register('addressLine2')}
-          />
-          <input
-            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
-            placeholder="City"
-            {...register('city')}
-          />
-          <input
-            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
-            placeholder="State"
-            {...register('state')}
-          />
-          <input
-            className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
-            placeholder="Zip Code"
-            {...register('zipCode')}
-          />
-          <button type="submit">Add New Household</button>
-        </form>
-      )}
-      {households &&
-        households.map((household) => (
-          <h3 key={household.id}>{household.name}</h3>
-        ))}
-    </section>
-  );
-};
+import { TiledList } from '../components/tiledList.component';
+import { AddHouseholdForm } from '../components/addHouseholdForm.component';
 
 const Home: NextPage = () => {
   return (
@@ -130,8 +16,9 @@ const Home: NextPage = () => {
 
       <div className="grid grid-flow-col place-content-start">
         <Sidebar />
-        <HouseholdList />
-        <InvitedList />
+        <AddHouseholdForm />
+        <TiledList query={'household.my-households'} />
+        <TiledList query={'household.invited'} />
       </div>
     </>
   );

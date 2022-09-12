@@ -125,6 +125,8 @@ model HouseholdsOnUsers {
 model Image {
   itemId String
   url    String @unique
+  alt String?
+  caption String?
 
   household Household @relation(fields: [itemId], references: [id], onDelete: Cascade)
 }
