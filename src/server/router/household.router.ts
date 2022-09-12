@@ -43,9 +43,51 @@ export const householdRouter = createRouter()
     async resolve({ ctx }) {
       const households = await prisma?.household.findMany({
         where: {
+          // householdsOnUsers: {
+          //   some: {
+          //     userId: ctx.session?.user?.id,
+          //     inviteAccepted: true,
+          //   },
+          // },
+          OR: [
+            {
+              householdsOnUsers: {
+                some: {
+                  userId: ctx.session?.user?.id,
+                  inviteAccepted: true,
+                },
+              },
+            },
+            {
+              householdsOnUsers: {
+                some: {
+                  userId: ctx.session?.user?.id,
+                  inviteAccepted: null,
+                  invitedById: null,
+                  isOwner: true,
+                },
+              },
+            },
+          ],
+        },
+      });
+
+      return households;
+    },
+  })
+  .query('invited', {
+    async resolve({ ctx }) {
+      const households = await prisma?.household.findMany({
+        where: {
           householdsOnUsers: {
-            every: {
+            some: {
               userId: ctx.session?.user?.id,
+              invitedById: {
+                not: null,
+              },
+              inviteAccepted: {
+                equals: null,
+              },
             },
           },
         },

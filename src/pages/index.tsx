@@ -8,6 +8,35 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { CreateHouseholdInput } from '../schemas/household.schema';
 import { Sidebar } from '../components/sidebar.component';
 
+const InvitedList = () => {
+  const {
+    data: invited,
+    isLoading,
+    error,
+  } = trpc.useQuery(['household.invited']);
+
+  if (isLoading) {
+    return <p>Loading Invited</p>;
+  }
+
+  if (error) {
+    return <p>Error loading invited</p>;
+  }
+
+  return (
+    <>
+      <h3>Invites</h3>
+      {invited &&
+        invited.map((household) => (
+          <div key={household.id}>
+            {household.name} <button>Accept</button>&nbsp;
+            <button>Decline</button>
+          </div>
+        ))}
+    </>
+  );
+};
+
 const HouseholdList = () => {
   const [showAddHouseholdForm, setShowAddHouseholdForm] = useState(false);
   const utils = trpc.useContext();
@@ -102,6 +131,7 @@ const Home: NextPage = () => {
       <div className="grid grid-flow-col place-content-start">
         <Sidebar />
         <HouseholdList />
+        <InvitedList />
       </div>
     </>
   );
