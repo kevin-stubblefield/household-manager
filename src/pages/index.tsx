@@ -14,11 +14,13 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="grid grid-flow-col place-content-start">
+      <div className="flex">
         <Sidebar />
-        <AddHouseholdForm />
-        <TiledList query={'household.my-households'} />
-        <TiledList query={'household.invited'} />
+        <div className="flex-1">
+          <AddHouseholdForm />
+          <TiledList query={'household.my-households'} header="Households" />
+          <TiledList query={'household.invited'} header="Pending Invites" />
+        </div>
       </div>
     </>
   );

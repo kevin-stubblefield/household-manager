@@ -42,13 +42,10 @@ export const householdRouter = createRouter()
   .query('my-households', {
     async resolve({ ctx }) {
       const households = await prisma?.household.findMany({
+        include: {
+          images: true,
+        },
         where: {
-          // householdsOnUsers: {
-          //   some: {
-          //     userId: ctx.session?.user?.id,
-          //     inviteAccepted: true,
-          //   },
-          // },
           OR: [
             {
               householdsOnUsers: {
@@ -78,6 +75,9 @@ export const householdRouter = createRouter()
   .query('invited', {
     async resolve({ ctx }) {
       const households = await prisma?.household.findMany({
+        include: {
+          images: true,
+        },
         where: {
           householdsOnUsers: {
             some: {

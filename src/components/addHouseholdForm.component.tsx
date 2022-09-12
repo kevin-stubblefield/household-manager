@@ -32,7 +32,7 @@ export const AddHouseholdForm = () => {
   return (
     <div className="p-2">
       <button
-        className="p-2 mb-2 text-slate-100 bg-blue-600 rounded-lg drop-shadow-md hover:bg-blue-500 transition-all duration-[250ms]"
+        className="p-2 mb-2 text-slate-100 bg-blue-600 rounded shadow hover:bg-blue-500 transition-all duration-[250ms]"
         onClick={toggleShowAddHouseholdForm}
       >
         {showAddHouseholdForm ? 'Hide' : 'Add Household'}
@@ -70,7 +70,7 @@ export const AddHouseholdForm = () => {
             {...register('zipCode')}
           />
           <button
-            className="p-2 mb-2 text-slate-100 bg-green-600 rounded drop-shadow-md hover:bg-green-500 transition-all duration-[250ms]"
+            className="p-2 mb-2 text-slate-100 bg-green-600 rounded shadow-md hover:bg-green-500 transition-all duration-[250ms]"
             type="submit"
           >
             Add New Household
