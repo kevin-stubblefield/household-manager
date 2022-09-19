@@ -31,6 +31,12 @@ export const Sidebar = () => {
 
   const pages = [
     {
+      id: 4,
+      name: 'Households',
+      link: '/',
+      icon: <TasksIcon expanded={expanded} />,
+    },
+    {
       id: 1,
       name: 'Tasks',
       link: '/tasks',
