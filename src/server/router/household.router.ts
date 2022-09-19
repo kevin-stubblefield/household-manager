@@ -95,4 +95,16 @@ export const householdRouter = createRouter()
 
       return households;
     },
+  })
+  .query('get-household', {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return prisma?.household.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+    },
   });
