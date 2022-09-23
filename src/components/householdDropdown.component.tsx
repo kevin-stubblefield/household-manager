@@ -2,23 +2,16 @@ import { ChangeEvent } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import { trpc } from '../utils/trpc';
 
-export const UserDropdown = ({
-  householdId,
+export const HouseholdDropdown = ({
   formBinding,
   onSelect,
-  hasEmpty,
-  emptyLabel,
+  hasAny,
 }: {
-  householdId: string;
   formBinding: UseFormRegisterReturn;
   onSelect?: (e: ChangeEvent<HTMLSelectElement>) => void;
-  hasEmpty?: boolean;
-  emptyLabel?: string;
+  hasAny: boolean;
 }) => {
-  const { data, isLoading } = trpc.useQuery([
-    'users.for-dropdown',
-    { householdId },
-  ]);
+  const { data, isLoading } = trpc.useQuery(['household.for-dropdown']);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -27,12 +20,11 @@ export const UserDropdown = ({
   return (
     <select
       {...formBinding}
-      onChange={onSelect}
       className="p-1 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms] h-12"
     >
-      {hasEmpty && (
-        <option key="user-dropdown-any" value="">
-          {emptyLabel || 'Any'}
+      {hasAny && (
+        <option key="household-dropdown-any" value="">
+          Any
         </option>
       )}
       {data &&
