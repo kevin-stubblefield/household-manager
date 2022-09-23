@@ -33,7 +33,7 @@ export const Sidebar = () => {
     {
       id: 4,
       name: 'Households',
-      link: '/',
+      link: '/households',
       icon: <TasksIcon expanded={expanded} />,
     },
     {
@@ -63,7 +63,9 @@ export const Sidebar = () => {
       } transition-all duration-300`}
     >
       <header className="flex mb-8 p-2">
-        <span className="flex-1">Home Manager</span>
+        <Link href="/" className="flex-1">
+          Home Manager
+        </Link>
         <button
           className="inline-flex hover:scale-[1.1] duration-150"
           onClick={toggleExpanded}
