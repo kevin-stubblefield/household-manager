@@ -63,9 +63,9 @@ export const Sidebar = () => {
       } transition-all duration-300`}
     >
       <header className="flex mb-8 p-2">
-        <Link href="/" className="flex-1">
-          Home Manager
-        </Link>
+        <span className="flex-1">
+          <Link href="/">Home Manager</Link>
+        </span>
         <button
           className="inline-flex hover:scale-[1.1] duration-150"
           onClick={toggleExpanded}

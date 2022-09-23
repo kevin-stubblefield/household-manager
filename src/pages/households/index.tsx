@@ -14,3 +14,5 @@ const HouseholdsPage: NextPage = () => {
     </MainLayout>
   );
 };
+
+export default HouseholdsPage;
