@@ -8,12 +8,8 @@ import { MainLayout } from '../layouts/main.layout';
 
 const Home: NextPage = () => {
   return (
-    <MainLayout title="Households" description="Households for the user">
-      <div className="flex-1">
-        <AddHouseholdForm />
-        <TiledList query={'household.my-households'} header="Households" />
-        <TiledList query={'household.invited'} header="Pending Invites" />
-      </div>
+    <MainLayout title="Home" description="User dashboard">
+      <p>Hi. This will maybe be a dashboard? or just go to /households, idk</p>
     </MainLayout>
   );
 };
