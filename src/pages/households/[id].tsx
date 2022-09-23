@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
 import { Sidebar } from '../../components/sidebar.component';
+import { UserDropdown } from '../../components/userDropdown.component';
 import { trpc } from '../../utils/trpc';
 
 const HouseholdDetails = () => {
@@ -38,40 +39,6 @@ const HouseholdDetails = () => {
       <h2>{data?.name}</h2>
       <UserDropdown householdId={id} onSelect={onSelectUser} />
     </>
-  );
-};
-
-const UserDropdown = ({
-  householdId,
-  onSelect,
-}: {
-  householdId: string;
-  onSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
-}) => {
-  const { data, isLoading } = trpc.useQuery([
-    'users.household-users',
-    { householdId },
-  ]);
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  return (
-    <select
-      onChange={onSelect}
-      className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms] h-12"
-    >
-      <option key="user-dropdown-any" value="">
-        Any
-      </option>
-      {data &&
-        data.map((user) => (
-          <option key={user.id} value={user.id}>
-            {user.name}
-          </option>
-        ))}
-    </select>
   );
 };
 
