@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { ChangeEvent, useState } from 'react';
 import { Sidebar } from '../../components/sidebar.component';
 import { trpc } from '../../utils/trpc';
 
@@ -8,10 +9,16 @@ const HouseholdDetails = () => {
   const router = useRouter();
   const id = router.query.id as string;
 
+  const [selectedUser, setSelectedUser] = useState('');
+
   const { data, isLoading } = trpc.useQuery([
     'household.get-household',
     { id },
   ]);
+
+  function onSelectUser(e: ChangeEvent<HTMLSelectElement>) {
+    setSelectedUser(e.currentTarget.value);
+  }
 
   if (isLoading) {
     return (
@@ -29,7 +36,42 @@ const HouseholdDetails = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h2>{data?.name}</h2>
+      <UserDropdown householdId={id} onSelect={onSelectUser} />
     </>
+  );
+};
+
+const UserDropdown = ({
+  householdId,
+  onSelect,
+}: {
+  householdId: string;
+  onSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
+}) => {
+  const { data, isLoading } = trpc.useQuery([
+    'users.household-users',
+    { householdId },
+  ]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  return (
+    <select
+      onChange={onSelect}
+      className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms] h-12"
+    >
+      <option key="user-dropdown-any" value="">
+        Any
+      </option>
+      {data &&
+        data.map((user) => (
+          <option key={user.id} value={user.id}>
+            {user.name}
+          </option>
+        ))}
+    </select>
   );
 };
 
