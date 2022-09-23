@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import { Sidebar } from '../../components/sidebar.component';
 import { MainLayout } from '../../layouts/main.layout';
 
 const TasksPage: NextPage = () => {
