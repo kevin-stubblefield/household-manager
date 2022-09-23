@@ -107,4 +107,38 @@ export const householdRouter = createRouter()
         },
       });
     },
+  })
+  .query('for-dropdown', {
+    async resolve({ ctx }) {
+      const households = await prisma?.household.findMany({
+        select: {
+          name: true,
+          id: true,
+        },
+        where: {
+          OR: [
+            {
+              householdsOnUsers: {
+                some: {
+                  userId: ctx.session?.user?.id,
+                  inviteAccepted: true,
+                },
+              },
+            },
+            {
+              householdsOnUsers: {
+                some: {
+                  userId: ctx.session?.user?.id,
+                  inviteAccepted: null,
+                  invitedById: null,
+                  isOwner: true,
+                },
+              },
+            },
+          ],
+        },
+      });
+
+      return households;
+    },
   });
