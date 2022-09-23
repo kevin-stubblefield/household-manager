@@ -20,7 +20,7 @@ export const MainLayout = ({
       </Head>
       <div className="flex">
         <Sidebar />
-        {children}
+        <div className="p-2 flex-1">{children}</div>
       </div>
     </>
   );

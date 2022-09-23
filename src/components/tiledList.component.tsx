@@ -18,7 +18,7 @@ export const TiledList = ({ query, header }: TiledListProps) => {
   }
 
   return (
-    <div className="p-2 mb-8">
+    <div className="mb-8">
       <h2 className="text-2xl font-thin">{header}</h2>
       <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
         {data &&

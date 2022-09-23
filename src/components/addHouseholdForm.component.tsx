@@ -30,7 +30,7 @@ export const AddHouseholdForm = () => {
   }, [formState, reset]);
 
   return (
-    <div className="p-2">
+    <>
       <button
         className="p-2 mb-2 text-slate-100 bg-blue-600 rounded shadow hover:bg-blue-500 transition-all duration-[250ms]"
         onClick={toggleShowAddHouseholdForm}
@@ -77,6 +77,6 @@ export const AddHouseholdForm = () => {
           </button>
         </form>
       )}
-    </div>
+    </>
   );
 };
