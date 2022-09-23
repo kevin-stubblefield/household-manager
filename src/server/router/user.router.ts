@@ -2,7 +2,7 @@ import { createRouter } from './context';
 import z from 'zod';
 import { Prisma } from '@prisma/client';
 
-export const userRouter = createRouter().query('household-users', {
+export const userRouter = createRouter().query('for-dropdown', {
   input: z.object({
     householdId: z.string(),
   }),

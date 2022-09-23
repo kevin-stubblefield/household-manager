@@ -9,7 +9,7 @@ export const UserDropdown = ({
   onSelect: (e: ChangeEvent<HTMLSelectElement>) => void;
 }) => {
   const { data, isLoading } = trpc.useQuery([
-    'users.household-users',
+    'users.for-dropdown',
     { householdId },
   ]);
 
