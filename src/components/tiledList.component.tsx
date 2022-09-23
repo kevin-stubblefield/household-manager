@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { TQuery, trpc } from '../utils/trpc';
 
 type TiledListProps = {
-  query: Exclude<TQuery, 'household.get-household'>;
+  query: Extract<TQuery, 'household.my-households' | 'household.invited'>;
   header: string;
 };
 
