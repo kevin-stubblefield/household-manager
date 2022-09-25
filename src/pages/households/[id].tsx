@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
+import Loading from '../../components/loading.component';
 import { Sidebar } from '../../components/sidebar.component';
 import { UserDropdown } from '../../components/userDropdown.component';
 import { trpc } from '../../utils/trpc';
@@ -22,11 +23,7 @@ const HouseholdDetails = () => {
   }
 
   if (isLoading) {
-    return (
-      <>
-        <p>Loading...</p>
-      </>
-    );
+    return <Loading />;
   }
 
   return (
@@ -37,7 +34,6 @@ const HouseholdDetails = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <h2>{data?.name}</h2>
-      <UserDropdown householdId={id} onSelect={onSelectUser} />
     </>
   );
 };

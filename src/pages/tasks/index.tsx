@@ -2,6 +2,7 @@ import { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { HouseholdDropdown } from '../../components/householdDropdown.component';
+import Loading from '../../components/loading.component';
 import { UserDropdown } from '../../components/userDropdown.component';
 import { MainLayout } from '../../layouts/main.layout';
 import { CreateTaskInput } from '../../schemas/task.schema';
@@ -81,7 +82,7 @@ const TasksPage: NextPage = () => {
   const { data, isLoading } = trpc.useQuery(['tasks.my-tasks']);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   return (

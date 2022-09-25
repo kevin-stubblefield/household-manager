@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { TQuery, trpc } from '../utils/trpc';
+import Loading from './loading.component';
 
 type TiledListProps = {
   query: Extract<TQuery, 'household.my-households' | 'household.invited'>;
@@ -10,7 +11,7 @@ export const TiledList = ({ query, header }: TiledListProps) => {
   const { data, isLoading, error } = trpc.useQuery([query]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {
