@@ -1,6 +1,11 @@
 import { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import {
+  FormProvider,
+  SubmitHandler,
+  useForm,
+  useFormContext,
+} from 'react-hook-form';
 import { HouseholdDropdown } from '../../components/householdDropdown.component';
 import Loading from '../../components/loading.component';
 import { UserDropdown } from '../../components/userDropdown.component';
@@ -11,8 +16,9 @@ import { trpc } from '../../utils/trpc';
 const AddTaskForm = () => {
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
 
+  const methods = useForm<CreateTaskInput>();
   const { register, handleSubmit, reset, formState, getValues, watch } =
-    useForm<CreateTaskInput>();
+    methods;
   const utils = trpc.useContext();
   const { mutate } = trpc.useMutation(['tasks.create-task'], {
     onSuccess() {
@@ -38,7 +44,7 @@ const AddTaskForm = () => {
   }, [formState, reset]);
 
   return (
-    <>
+    <FormProvider {...methods}>
       <button
         className="p-2 mb-2 text-slate-100 bg-blue-600 rounded shadow hover:bg-blue-500 transition-all duration-[250ms]"
         onClick={toggleShowAddTaskForm}
@@ -74,7 +80,7 @@ const AddTaskForm = () => {
           </button>
         </form>
       )}
-    </>
+    </FormProvider>
   );
 };
 
