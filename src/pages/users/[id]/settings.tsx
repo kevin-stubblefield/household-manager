@@ -25,19 +25,19 @@ const SettingsPage: NextPage = () => {
     await mutate(values);
   };
 
+  useEffect(() => {
+    if (!session || session.user?.id !== id) {
+      router.push('/');
+    }
+  }, [id]);
+
   if (isLoading) {
     return <Loading />;
   }
 
-  //   useEffect(() => {
-  //     if (!session || session.user?.id !== id) {
-  //       router.push('/');
-  //     }
-  //   }, []);
-
   return (
     <MainLayout title="Settings" description="Settings for user">
-      <p>Settings</p>
+      <h2 className="text-2xl font-thin mb-2">Settings</h2>
       {data && (
         <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
           <input
