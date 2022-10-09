@@ -40,7 +40,7 @@ export function AddTaskForm() {
         {showAddTaskForm ? 'Hide' : 'Add Task'}
       </button>
       {showAddTaskForm && (
-        <form className="space-y-2" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-2 mb-2" onSubmit={handleSubmit(onSubmit)}>
           <input
             className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
             placeholder="Task name"
