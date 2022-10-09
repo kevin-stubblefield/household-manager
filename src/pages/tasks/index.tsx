@@ -1,25 +1,18 @@
 import { NextPage } from 'next';
 import { useEffect, useState } from 'react';
-import {
-  FormProvider,
-  SubmitHandler,
-  useForm,
-  useFormContext,
-} from 'react-hook-form';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Dropdown } from '../../components/dropdown.component';
-import { HouseholdDropdown } from '../../components/householdDropdown.component';
 import Loading from '../../components/loading.component';
-import { UserDropdown } from '../../components/userDropdown.component';
 import { MainLayout } from '../../layouts/main.layout';
 import { CreateTaskInput } from '../../schemas/task.schema';
 import { trpc } from '../../utils/trpc';
 
 const AddTaskForm = () => {
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
+  const [selectedHousehold, setSelectedHousehold] = useState('');
 
   const methods = useForm<CreateTaskInput>();
-  const { register, handleSubmit, reset, formState, getValues, watch } =
-    methods;
+  const { register, handleSubmit, reset, formState } = methods;
   const utils = trpc.useContext();
   const { mutate } = trpc.useMutation(['tasks.create-task'], {
     onSuccess() {
@@ -27,10 +20,7 @@ const AddTaskForm = () => {
     },
   });
 
-  const watchHouseholdSelection = watch('householdId');
-
   const onSubmit: SubmitHandler<CreateTaskInput> = async (values) => {
-    console.log(values);
     await mutate(values);
   };
 
@@ -42,7 +32,7 @@ const AddTaskForm = () => {
     if (formState.isSubmitSuccessful) {
       reset();
     }
-  }, [formState, reset]);
+  }, [formState.isSubmitSuccessful, reset]);
 
   return (
     <FormProvider {...methods}>
@@ -61,24 +51,22 @@ const AddTaskForm = () => {
           />
           <Dropdown
             name="householdId"
-            hasEmpty={false}
-            query="household.for-dropdown"
-          />
-          <Dropdown
-            name="assignedTo"
             hasEmpty={true}
-            emptyLabel="Not Assigned"
+            emptyLabel="Select Household"
+            query="household.for-dropdown"
+            onSelect={(e) => {
+              setSelectedHousehold(e.currentTarget.value);
+            }}
           />
-          {/* {watchHouseholdSelection && (
+          {selectedHousehold && (
             <Dropdown
+              name="assignedTo"
               hasEmpty={true}
               emptyLabel="Not Assigned"
-              householdId={getValues('householdId')}
-              formBinding={register('assignedTo', {
-                validate: () => getValues('householdId') !== undefined,
-              })}
+              query="users.for-dropdown"
+              queryParams={{ householdId: selectedHousehold }}
             />
-          )} */}
+          )}
           <button
             className="p-2 mb-2 text-slate-100 bg-green-600 rounded shadow-md hover:bg-green-500 transition-all duration-[250ms]"
             type="submit"

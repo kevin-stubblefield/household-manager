@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, UseFormRegisterReturn } from 'react-hook-form';
 import { inferQueryInput, TQuery, trpc } from '../utils/trpc';
 import Loading from './loading.component';
 
@@ -37,7 +37,15 @@ export const Dropdown = ({
     const { data, isLoading } = trpc.useQuery([query, queryParams]);
 
     if (isLoading) {
-      return <Loading />;
+      return (
+        <div>
+          <select>
+            <option key="loading" value="">
+              Loading...
+            </option>
+          </select>
+        </div>
+      );
     }
 
     fetchedOptions = data;
