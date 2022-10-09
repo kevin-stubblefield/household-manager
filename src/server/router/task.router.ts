@@ -14,6 +14,13 @@ export const taskRouter = createRouter()
               id: true,
             },
           },
+          user: {
+            select: {
+              name: true,
+              displayName: true,
+              id: true,
+            },
+          },
         },
         where: {
           OR: [
