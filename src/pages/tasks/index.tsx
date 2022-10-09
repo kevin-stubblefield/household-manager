@@ -6,6 +6,7 @@ import {
   useForm,
   useFormContext,
 } from 'react-hook-form';
+import { Dropdown } from '../../components/dropdown.component';
 import { HouseholdDropdown } from '../../components/householdDropdown.component';
 import Loading from '../../components/loading.component';
 import { UserDropdown } from '../../components/userDropdown.component';
@@ -58,12 +59,18 @@ const AddTaskForm = () => {
             placeholder="Task name"
             {...register('name')}
           />
-          <HouseholdDropdown
-            formBinding={register('householdId')}
-            hasAny={false}
+          <Dropdown
+            name="householdId"
+            hasEmpty={false}
+            query="household.for-dropdown"
           />
-          {watchHouseholdSelection && (
-            <UserDropdown
+          <Dropdown
+            name="assignedTo"
+            hasEmpty={true}
+            emptyLabel="Not Assigned"
+          />
+          {/* {watchHouseholdSelection && (
+            <Dropdown
               hasEmpty={true}
               emptyLabel="Not Assigned"
               householdId={getValues('householdId')}
@@ -71,7 +78,7 @@ const AddTaskForm = () => {
                 validate: () => getValues('householdId') !== undefined,
               })}
             />
-          )}
+          )} */}
           <button
             className="p-2 mb-2 text-slate-100 bg-green-600 rounded shadow-md hover:bg-green-500 transition-all duration-[250ms]"
             type="submit"
