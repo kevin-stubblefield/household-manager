@@ -158,7 +158,7 @@ model InventoryItem {
   unit          String
   serialNo      String?
   modelNo       String?
-  purchaseDate  String?
+  purchaseDate  DateTime?
   purchasePrice Decimal?
   wholeItemId   String?
 
