@@ -100,10 +100,21 @@ export const householdRouter = createRouter()
     input: z.object({
       id: z.string(),
     }),
-    async resolve({ input, ctx }) {
+    async resolve({ input }) {
       return prisma?.household.findUnique({
         where: {
           id: input.id,
+        },
+        include: {
+          householdsOnUsers: {
+            include: {
+              user: true,
+            },
+          },
+          groceries: true,
+          tasks: true,
+          inventory: true,
+          pets: true,
         },
       });
     },

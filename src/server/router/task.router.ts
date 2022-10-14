@@ -41,6 +41,18 @@ export const taskRouter = createRouter()
       });
     },
   })
+  .query('for-household', {
+    input: z.object({
+      householdId: z.string(),
+    }),
+    async resolve({ input }) {
+      return await prisma?.task.findMany({
+        where: {
+          householdId: input.householdId,
+        },
+      });
+    },
+  })
   .mutation('create-task', {
     input: createTaskSchema,
     async resolve({ input, ctx }) {
