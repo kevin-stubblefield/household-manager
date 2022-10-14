@@ -55,8 +55,8 @@ model User {
   sessions          Session[]
   Task              Task[]
   HouseholdsOnUsers HouseholdsOnUsers[]
-  invited HouseholdsOnUsers[] @relation("invited")
-  created HouseholdsOnUsers[] @relation("created")
+  invited           HouseholdsOnUsers[] @relation("invited")
+  created           HouseholdsOnUsers[] @relation("created")
 }
 
 model VerificationToken {
@@ -82,6 +82,9 @@ model Household {
 
   images            Image[]
   tasks             Task[]
+  groceries         Grocery[]
+  inventory         InventoryItem[]
+  pets              Pet[]
   householdsOnUsers HouseholdsOnUsers[]
 }
 
@@ -104,29 +107,90 @@ model Task {
 }
 
 model HouseholdsOnUsers {
-  householdId String
-  userId      String
-  createdById String?
-  invitedById String?
+  householdId    String
+  userId         String
+  createdById    String?
+  invitedById    String?
   inviteAccepted Boolean?
-  isOwner Boolean @default(false)
+  isOwner        Boolean  @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
   household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  invitedBy User? @relation("invited", fields: [invitedById], references: [id], onDelete: SetNull)
-  createdBy User? @relation("created", fields: [createdById], references: [id], onDelete: SetNull)
+  invitedBy User?     @relation("invited", fields: [invitedById], references: [id], onDelete: SetNull)
+  createdBy User?     @relation("created", fields: [createdById], references: [id], onDelete: SetNull)
 
   @@id([householdId, userId])
 }
 
 model Image {
-  itemId String
-  url    String @unique
-  alt String?
+  itemId  String
+  url     String  @unique
+  alt     String?
   caption String?
 
-  household Household @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  household Household     @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  inventory InventoryItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  pet       Pet           @relation(fields: [itemId], references: [id], onDelete: Cascade)
+}
+
+model Grocery {
+  id          String  @id @default(cuid())
+  householdId String
+  name        String
+  quantity    Int
+  unit        String
+  isMarked    Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
+}
+
+model InventoryItem {
+  id            String   @id @default(cuid())
+  householdId   String
+  name          String
+  quantity      Int
+  unit          String
+  serialNo      String?
+  modelNo       String?
+  purchaseDate  String?
+  purchasePrice Decimal?
+  wholeItemId   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  images    Image[]
+  wholeItem InventoryItem?  @relation("ItemParts", fields: [wholeItemId], references: [id], onDelete: Cascade)
+  parts     InventoryItem[] @relation("ItemParts")
+  household Household       @relation(fields: [householdId], references: [id], onDelete: Cascade)
+}
+
+model Pet {
+  id              String    @id @default(cuid())
+  householdId     String
+  name            String
+  birthday        DateTime?
+  species         String?
+  breed           String?
+  color           String?
+  vetName         String?
+  vetAddressLine1 String?
+  vetAddressLine2 String?
+  vetCity         String?
+  vetState        String?
+  vetZipCode      String?
+  vetPhoneNo      String?
+  vetEmail        String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  images    Image[]
+  household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
 }
