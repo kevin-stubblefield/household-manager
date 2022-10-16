@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { TQuery, trpc } from '../utils/trpc';
 import Loading from './loading.component';
+import { SectionHeading } from './typography.component';
 
 type TiledListProps = {
   query: Extract<TQuery, 'household.my-households' | 'household.invited'>;
@@ -20,7 +21,7 @@ export const TiledList = ({ query, header }: TiledListProps) => {
 
   return (
     <div className="mb-8">
-      <h2 className="text-2xl font-thin">{header}</h2>
+      <SectionHeading>{header}</SectionHeading>
       <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-2">
         {data &&
           data.map((item) => (

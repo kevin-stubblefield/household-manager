@@ -8,16 +8,18 @@ export const MainLayout = ({
   description,
 }: {
   children: ReactNode;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
 }) => {
   return (
     <>
-      <Head>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      {title && (
+        <Head>
+          <title>{title}</title>
+          <meta name="description" content={description} />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+      )}
       <div className="flex">
         <Sidebar />
         <div className="p-2 flex-1">{children}</div>
