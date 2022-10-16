@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CreateTaskInput } from '../../schemas/task.schema';
 import { Dropdown } from '../dropdown.component';
-import { GeneralForm, TextInput } from './generalForm.component';
+import { GeneralForm, SubmitButton, TextInput } from './generalForm.component';
 
 export function AddTaskForm() {
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
@@ -41,14 +41,10 @@ export function AddTaskForm() {
               emptyLabel="Not Assigned"
               query="users.for-dropdown"
               queryParams={{ householdId: selectedHousehold }}
+              registerOptions={{ required: false }}
             />
           )}
-          <button
-            className="p-2 mb-2 text-slate-100 bg-green-600 rounded shadow-md hover:bg-green-500 transition-all duration-[250ms]"
-            type="submit"
-          >
-            Add New Task
-          </button>
+          <SubmitButton text="Add New Task" />
         </GeneralForm>
       )}
     </>

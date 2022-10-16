@@ -103,7 +103,7 @@ export function TextInput({
 export function SubmitButton({ text }: { text: string }) {
   return (
     <button
-      className="p-2 mb-2 text-slate-100 bg-green-600 rounded shadow-md hover:bg-green-500 transition-all duration-[250ms]"
+      className="p-2 mb-2 text-slate-100 bg-green-600 rounded block shadow-md hover:bg-green-500 transition-all duration-[250ms]"
       type="submit"
     >
       {text}

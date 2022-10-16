@@ -1,5 +1,10 @@
 import { ChangeEvent } from 'react';
-import { useFormContext, UseFormRegisterReturn } from 'react-hook-form';
+import {
+  RegisterOptions,
+  useFormContext,
+  UseFormRegisterReturn,
+  useFormState,
+} from 'react-hook-form';
 import { inferQueryInput, TQuery, trpc } from '../utils/trpc';
 import Loading from './loading.component';
 
@@ -16,6 +21,7 @@ export const Dropdown = ({
   query,
   queryParams,
   options,
+  registerOptions,
 }: {
   onSelect?: (e: ChangeEvent<HTMLSelectElement>) => void;
   hasEmpty?: boolean;
@@ -29,8 +35,10 @@ export const Dropdown = ({
     void
   >;
   options?: Option[];
+  registerOptions?: RegisterOptions;
 }) => {
-  const { register } = useFormContext();
+  const { register, clearErrors } = useFormContext();
+  const { errors } = useFormState();
 
   let fetchedOptions;
   if (query) {
@@ -52,28 +60,42 @@ export const Dropdown = ({
   }
 
   return (
-    <select
-      {...register(name)}
-      onChange={onSelect}
-      className="p-1 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms] h-12"
-    >
-      {hasEmpty && (
-        <option key={`${name}-dropdown-any`} value="">
-          {emptyLabel || 'Any'}
-        </option>
+    <>
+      <select
+        {...register(
+          name,
+          registerOptions || { required: 'Please make a selection' }
+        )}
+        onChange={(e) => {
+          if (onSelect) {
+            onSelect(e);
+          }
+
+          clearErrors(name);
+        }}
+        className="p-1 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms] h-12"
+      >
+        {hasEmpty && (
+          <option key={`${name}-dropdown-any`} value="">
+            {emptyLabel || 'Any'}
+          </option>
+        )}
+        {options &&
+          options.map((option) => (
+            <option key={option.id} value={option.id}>
+              {option.name}
+            </option>
+          ))}
+        {fetchedOptions &&
+          fetchedOptions.map((option) => (
+            <option key={option.id} value={option.id}>
+              {option.name}
+            </option>
+          ))}
+      </select>
+      {errors[name] && (
+        <span className="text-red-500">{errors[name]?.message as string}</span>
       )}
-      {options &&
-        options.map((option) => (
-          <option key={option.id} value={option.id}>
-            {option.name}
-          </option>
-        ))}
-      {fetchedOptions &&
-        fetchedOptions.map((option) => (
-          <option key={option.id} value={option.id}>
-            {option.name}
-          </option>
-        ))}
-    </select>
+    </>
   );
 };

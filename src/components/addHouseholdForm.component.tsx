@@ -30,8 +30,24 @@ export const AddHouseholdForm = () => {
           <TextInput name="addressLine1" placeholderText="Address line 1" />
           <TextInput name="addressLine2" placeholderText="Address line 2" />
           <TextInput name="city" placeholderText="City" />
-          <TextInput name="state" placeholderText="State" />
-          <TextInput name="zipCode" placeholderText="Zip Code" />
+          <TextInput
+            name="state"
+            placeholderText="State"
+            registerOptions={{
+              required: 'Field is required',
+              maxLength: { value: 2, message: 'Field must be 2 letters long' },
+              minLength: { value: 2, message: 'Field must be 2 letters long' },
+            }}
+          />
+          <TextInput
+            name="zipCode"
+            placeholderText="Zip Code"
+            registerOptions={{
+              required: 'Field is required',
+              maxLength: { value: 5, message: 'Field must be 5 letters long' },
+              minLength: { value: 5, message: 'Field must be 5 letters long' },
+            }}
+          />
           <SubmitButton text="Add New Household" />
         </GeneralForm>
       )}
