@@ -26,13 +26,26 @@ export const AddHouseholdForm = () => {
           mutation="household.create-household"
           invalidateQuery="household.my-households"
         >
-          <TextInput name="name" placeholderText="Household name" />
-          <TextInput name="addressLine1" placeholderText="Address line 1" />
-          <TextInput name="addressLine2" placeholderText="Address line 2" />
-          <TextInput name="city" placeholderText="City" />
+          <TextInput
+            name="name"
+            placeholderText="Household name"
+            labelText="Name"
+          />
+          <TextInput
+            name="addressLine1"
+            placeholderText="Address line 1"
+            labelText="Address Line 1"
+          />
+          <TextInput
+            name="addressLine2"
+            placeholderText="Address line 2"
+            labelText="Address Line 2"
+          />
+          <TextInput name="city" placeholderText="City" labelText="City" />
           <TextInput
             name="state"
             placeholderText="State"
+            labelText="State"
             registerOptions={{
               required: 'Field is required',
               maxLength: { value: 2, message: 'Field must be 2 letters long' },
@@ -42,6 +55,7 @@ export const AddHouseholdForm = () => {
           <TextInput
             name="zipCode"
             placeholderText="Zip Code"
+            labelText="Zip Code"
             registerOptions={{
               required: 'Field is required',
               maxLength: { value: 5, message: 'Field must be 5 letters long' },

@@ -24,7 +24,7 @@ export function AddTaskForm() {
           mutation="tasks.create-task"
           invalidateQuery="tasks.my-tasks"
         >
-          <TextInput name="name" placeholderText="Task name" />
+          <TextInput name="name" placeholderText="Task name" labelText="Name" />
           <Dropdown
             name="householdId"
             hasEmpty={true}
