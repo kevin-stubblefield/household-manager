@@ -37,14 +37,14 @@ export const TiledList = ({ query, header }: TiledListProps) => {
                 <p>
                   {item.addressLine1 +
                     `${item.addressLine2 ? ', ' + item.addressLine2 : ''}`}
+                  {item.images[0] && (
+                    <img
+                      className="max-w-[25%] float-right"
+                      src={item.images[0].url}
+                      alt={item.images[0].alt || 'Image of home'}
+                    />
+                  )}
                 </p>
-                {item.images[0] && (
-                  <img
-                    className="float-right"
-                    src={item.images[0].url}
-                    alt={item.images[0].alt || 'Image of home'}
-                  />
-                )}
               </div>
             </Link>
           ))}

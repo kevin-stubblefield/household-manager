@@ -115,6 +115,7 @@ export const householdRouter = createRouter()
           tasks: true,
           inventory: true,
           pets: true,
+          images: true,
         },
       });
     },
