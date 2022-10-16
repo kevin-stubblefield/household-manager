@@ -1,10 +1,6 @@
 import { useState } from 'react';
-import { CreateHouseholdInput } from '../schemas/household.schema';
-import {
-  GeneralForm,
-  SubmitButton,
-  TextInput,
-} from './forms/generalForm.component';
+import { CreateHouseholdInput } from '../../schemas/household.schema';
+import { GeneralForm, SubmitButton, TextInput } from './generalForm.component';
 
 export const AddHouseholdForm = () => {
   const [showAddHouseholdForm, setShowAddHouseholdForm] = useState(false);

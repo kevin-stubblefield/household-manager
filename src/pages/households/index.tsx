@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import { AddHouseholdForm } from '../../components/addHouseholdForm.component';
+import { AddHouseholdForm } from '../../components/forms/addHouseholdForm.component';
 import { TiledList } from '../../components/tiledList.component';
 import { MainLayout } from '../../layouts/main.layout';
 
