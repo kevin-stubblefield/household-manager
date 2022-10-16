@@ -5,8 +5,8 @@ import {
   UseFormRegisterReturn,
   useFormState,
 } from 'react-hook-form';
-import { inferQueryInput, TQuery, trpc } from '../utils/trpc';
-import Loading from './loading.component';
+import { inferQueryInput, TQuery, trpc } from '../../utils/trpc';
+import Loading from '../loading.component';
 
 export type Option = {
   id: string;

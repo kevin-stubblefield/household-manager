@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CreateTaskInput } from '../../schemas/task.schema';
-import { Dropdown } from '../dropdown.component';
+import { Dropdown } from './dropdown.component';
 import { GeneralForm, SubmitButton, TextInput } from './generalForm.component';
 
 export function AddTaskForm() {
