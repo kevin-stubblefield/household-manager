@@ -14,9 +14,9 @@ export const appRouter = createRouter()
   .merge('household.', householdRouter)
   .merge('users.', userRouter)
   .merge('tasks.', taskRouter)
-  .merge('groceries', GroceryRouter)
-  .merge('inventory', InventoryRouter)
-  .merge('pets', PetRouter);
+  .merge('groceries.', GroceryRouter)
+  .merge('inventory.', InventoryRouter)
+  .merge('pets.', PetRouter);
 
 // export type definition of API
 export type AppRouter = typeof appRouter;

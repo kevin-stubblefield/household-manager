@@ -1,12 +1,11 @@
 import React, { ReactElement, ReactNode, useEffect } from 'react';
 import {
-  FieldValues,
+  DefaultValues,
   FormProvider,
   RegisterOptions,
   SubmitHandler,
   useForm,
   useFormContext,
-  UseFormRegister,
   useFormState,
 } from 'react-hook-form';
 import { inferMutationInput, TMutation, TQuery, trpc } from '../../utils/trpc';
@@ -15,12 +14,14 @@ export function GeneralForm<T extends inferMutationInput<TMutation>>({
   children,
   mutation,
   invalidateQuery,
+  defaultValues,
 }: {
   children: ReactNode;
   mutation: TMutation;
   invalidateQuery?: TQuery;
+  defaultValues?: DefaultValues<T>;
 }) {
-  const methods = useForm<T>();
+  const methods = useForm<T>({ defaultValues });
   const { handleSubmit, formState, reset } = methods;
 
   const utils = trpc.useContext();
@@ -63,13 +64,15 @@ export function GeneralForm<T extends inferMutationInput<TMutation>>({
   );
 }
 
-export function TextInput({
+export function Input({
+  type,
   name,
   labelText,
   placeholderText,
   registerOptions,
   ...rest
 }: {
+  type?: string;
   name: string;
   labelText?: string;
   placeholderText: string;
@@ -87,6 +90,7 @@ export function TextInput({
       )}
       <input
         id={name}
+        type={type || 'text'}
         className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
         placeholder={placeholderText}
         {...register(

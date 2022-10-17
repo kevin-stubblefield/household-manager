@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CreateTaskInput } from '../../schemas/task.schema';
 import { Dropdown } from './dropdown.component';
-import { GeneralForm, SubmitButton, TextInput } from './generalForm.component';
+import { GeneralForm, SubmitButton, Input } from './generalForm.component';
 
 export function AddTaskForm() {
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
@@ -24,7 +24,7 @@ export function AddTaskForm() {
           mutation="tasks.create-task"
           invalidateQuery="tasks.my-tasks"
         >
-          <TextInput name="name" placeholderText="Task name" labelText="Name" />
+          <Input name="name" placeholderText="Task name" labelText="Name" />
           <Dropdown
             name="householdId"
             hasEmpty={true}

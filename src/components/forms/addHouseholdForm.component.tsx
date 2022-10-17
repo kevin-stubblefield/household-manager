@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CreateHouseholdInput } from '../../schemas/household.schema';
-import { GeneralForm, SubmitButton, TextInput } from './generalForm.component';
+import { GeneralForm, SubmitButton, Input } from './generalForm.component';
 
 export const AddHouseholdForm = () => {
   const [showAddHouseholdForm, setShowAddHouseholdForm] = useState(false);
@@ -22,23 +22,23 @@ export const AddHouseholdForm = () => {
           mutation="household.create-household"
           invalidateQuery="household.my-households"
         >
-          <TextInput
+          <Input
             name="name"
             placeholderText="Household name"
             labelText="Name"
           />
-          <TextInput
+          <Input
             name="addressLine1"
             placeholderText="Address line 1"
             labelText="Address Line 1"
           />
-          <TextInput
+          <Input
             name="addressLine2"
             placeholderText="Address line 2"
             labelText="Address Line 2"
           />
-          <TextInput name="city" placeholderText="City" labelText="City" />
-          <TextInput
+          <Input name="city" placeholderText="City" labelText="City" />
+          <Input
             name="state"
             placeholderText="State"
             labelText="State"
@@ -48,7 +48,7 @@ export const AddHouseholdForm = () => {
               minLength: { value: 2, message: 'Field must be 2 letters long' },
             }}
           />
-          <TextInput
+          <Input
             name="zipCode"
             placeholderText="Zip Code"
             labelText="Zip Code"

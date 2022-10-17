@@ -2,7 +2,7 @@ import z from 'zod';
 
 export const createInventoryItemSchema = z.object({
   name: z.string(),
-  householdId: z.string(),
+  userId: z.string(),
   quantity: z.number().default(1),
   unit: z.string().default('unit'),
   serialNo: z.string().optional(),
