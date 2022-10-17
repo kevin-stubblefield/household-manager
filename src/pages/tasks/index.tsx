@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import { AddTaskForm } from '../../components/forms/addTaskForm.component';
 import Loading from '../../components/loading.component';
+import { TableHeader } from '../../components/table.component';
 import { MainLayout } from '../../layouts/main.layout';
 import { trpc } from '../../utils/trpc';
 
@@ -13,6 +14,8 @@ const TasksPage: NextPage = () => {
 
   const cellClass = 'border border-slate-500 p-2';
 
+  const columnHeaders = ['Task', 'Household', 'Assigned To', 'Priority', 'Due'];
+
   return (
     <MainLayout
       title="Tasks"
@@ -21,15 +24,7 @@ const TasksPage: NextPage = () => {
       <AddTaskForm />
       {data && data.length > 0 && (
         <table className="border-collapse border border-slate-500 w-full">
-          <thead>
-            <tr>
-              <th className={cellClass}>Task</th>
-              <th className={cellClass}>Household</th>
-              <th className={cellClass}>Assigned To</th>
-              <th className={cellClass}>Priority</th>
-              <th className={cellClass}>Due</th>
-            </tr>
-          </thead>
+          <TableHeader columnHeaders={columnHeaders} />
           <tbody>
             {data &&
               data.map((task) => (
