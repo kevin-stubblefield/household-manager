@@ -113,7 +113,6 @@ export const householdRouter = createRouter()
           },
           groceries: true,
           tasks: true,
-          inventory: true,
           pets: true,
           images: true,
         },
