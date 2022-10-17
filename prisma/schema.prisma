@@ -54,6 +54,7 @@ model User {
   accounts          Account[]
   sessions          Session[]
   Task              Task[]
+  inventory         InventoryItem[]
   HouseholdsOnUsers HouseholdsOnUsers[]
   invited           HouseholdsOnUsers[] @relation("invited")
   created           HouseholdsOnUsers[] @relation("created")
@@ -83,7 +84,6 @@ model Household {
   images            Image[]
   tasks             Task[]
   groceries         Grocery[]
-  inventory         InventoryItem[]
   pets              Pet[]
   householdsOnUsers HouseholdsOnUsers[]
 }
@@ -151,8 +151,8 @@ model Grocery {
 }
 
 model InventoryItem {
-  id            String   @id @default(cuid())
-  householdId   String
+  id            String    @id @default(cuid())
+  userId        String
   name          String
   quantity      Int
   unit          String
@@ -168,7 +168,7 @@ model InventoryItem {
   images    Image[]
   wholeItem InventoryItem?  @relation("ItemParts", fields: [wholeItemId], references: [id], onDelete: Cascade)
   parts     InventoryItem[] @relation("ItemParts")
-  household Household       @relation(fields: [householdId], references: [id], onDelete: Cascade)
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Pet {
