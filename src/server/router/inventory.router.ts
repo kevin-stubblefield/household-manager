@@ -21,6 +21,10 @@ export const InventoryRouter = createRouter()
       return await prisma?.inventoryItem.findMany({
         where: {
           userId: ctx.session?.user?.id,
+          wholeItemId: null,
+        },
+        include: {
+          parts: true,
         },
       });
     },
