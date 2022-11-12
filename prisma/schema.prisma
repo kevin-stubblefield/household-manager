@@ -53,9 +53,9 @@ model User {
 
   accounts          Account[]
   sessions          Session[]
-  Task              Task[]
+  tasks             Task[]
   inventory         InventoryItem[]
-  HouseholdsOnUsers HouseholdsOnUsers[]
+  householdsOnUsers HouseholdsOnUsers[]
   invited           HouseholdsOnUsers[] @relation("invited")
   created           HouseholdsOnUsers[] @relation("created")
 }
@@ -92,12 +92,22 @@ model Task {
   id                String    @id @default(cuid())
   householdId       String
   name              String
-  frequency         String
-  scheduledDay      Int       @default(1)
-  priority          Int
+  notes             String?
+  isRecurring       Boolean   @default(false)
+  recurrenceRule    String?
+  frequency         String?
+  interval          String?
+  startTime         DateTime?
+  endTime           DateTime?
+  byDate            String?
+  byDay             String?
+  duration          String?
+  priority          Int       @default(3)
   dueDate           DateTime?
   lastCompletedDate DateTime?
   assignedTo        String?
+  setAsBusy         Boolean   @default(false)
+  isAllDay          Boolean   @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
