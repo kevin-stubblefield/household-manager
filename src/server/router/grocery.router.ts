@@ -1,8 +1,9 @@
 import { createRouter } from './context';
 import z from 'zod';
 import { Prisma } from '@prisma/client';
+import { createProtectedRouter } from './protected-router';
 
-export const GroceryRouter = createRouter().query('for-household', {
+export const GroceryRouter = createProtectedRouter().query('for-household', {
   input: z.object({
     householdId: z.string(),
   }),

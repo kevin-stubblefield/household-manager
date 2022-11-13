@@ -2,10 +2,15 @@ import { createRouter } from './context';
 import z from 'zod';
 import { Prisma } from '@prisma/client';
 import { createTaskSchema } from '../../schemas/task.schema';
+import { createProtectedRouter } from './protected-router';
 
-export const taskRouter = createRouter()
+export const taskRouter = createProtectedRouter()
   .query('my-tasks', {
     async resolve({ ctx }) {
+      if (!ctx.session) {
+        return [];
+      }
+
       return await prisma?.task.findMany({
         include: {
           household: {

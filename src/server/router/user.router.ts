@@ -2,8 +2,9 @@ import { createRouter } from './context';
 import z from 'zod';
 import { Prisma } from '@prisma/client';
 import { updateSettingsSchema } from '../../schemas/user.schema';
+import { createProtectedRouter } from './protected-router';
 
-export const userRouter = createRouter()
+export const userRouter = createProtectedRouter()
   .query('for-dropdown', {
     input: z.object({
       householdId: z.string(),
@@ -15,7 +16,7 @@ export const userRouter = createRouter()
           id: true,
         },
         where: {
-          HouseholdsOnUsers: {
+          householdsOnUsers: {
             some: {
               householdId: input.householdId,
             },

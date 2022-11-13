@@ -1,8 +1,9 @@
 import { Prisma } from '@prisma/client';
 import { z } from 'zod';
 import { createRouter } from './context';
+import { createProtectedRouter } from './protected-router';
 
-export const householdRouter = createRouter()
+export const householdRouter = createProtectedRouter()
   .mutation('create-household', {
     input: z.object({
       name: z.string(),
@@ -41,6 +42,10 @@ export const householdRouter = createRouter()
   })
   .query('my-households', {
     async resolve({ ctx }) {
+      if (!ctx.session) {
+        return [];
+      }
+
       const households = await prisma?.household.findMany({
         include: {
           images: true,
@@ -74,6 +79,10 @@ export const householdRouter = createRouter()
   })
   .query('invited', {
     async resolve({ ctx }) {
+      if (!ctx.session) {
+        return [];
+      }
+
       const households = await prisma?.household.findMany({
         include: {
           images: true,
