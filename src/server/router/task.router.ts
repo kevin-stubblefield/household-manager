@@ -64,7 +64,6 @@ export const taskRouter = createProtectedRouter()
       if (!input.assignedTo) {
         input.assignedTo = null;
       }
-      console.log(input);
       const task = await prisma?.task.create({
         data: input,
       });
