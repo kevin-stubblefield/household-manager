@@ -3,14 +3,13 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Loading from '../../../components/loading.component';
-import { MainLayout } from '../../../layouts/main.layout';
-import { UpdateSettingsInput } from '../../../schemas/user.schema';
-import { trpc } from '../../../utils/trpc';
+import Loading from '../../components/loading.component';
+import { MainLayout } from '../../layouts/main.layout';
+import { UpdateSettingsInput } from '../../schemas/user.schema';
+import { trpc } from '../../utils/trpc';
 
 const SettingsPage: NextPage = () => {
   const router = useRouter();
-  const { id } = router.query;
   const { data: session } = useSession();
   const utils = trpc.useContext();
   const { mutate } = trpc.useMutation(['users.update-settings'], {
@@ -26,10 +25,10 @@ const SettingsPage: NextPage = () => {
   };
 
   useEffect(() => {
-    if (!session || session.user?.id !== id) {
+    if (!session || !session.user) {
       router.push('/');
     }
-  }, [id]);
+  });
 
   if (isLoading) {
     return <Loading />;

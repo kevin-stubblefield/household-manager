@@ -15,7 +15,7 @@ export const AccountButton = ({ session }: { session: Session | null }) => {
   return (
     <div className="p-2">
       Hi, {session?.user?.name} |{` (${session?.user?.id}) `}
-      <Link href={`/users/${session.user?.id}/settings`}>Settings</Link>
+      <Link href={`/me`}>Settings</Link>
       <br />
       <button onClick={() => signOut()}>Sign Out</button>
     </div>
