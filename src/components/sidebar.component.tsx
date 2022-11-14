@@ -1,12 +1,15 @@
+import { Session } from 'next-auth';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useState } from 'react';
 
-export const AccountButton = () => {
-  const { data: session } = useSession();
-
+export const AccountButton = ({ session }: { session: Session | null }) => {
   if (!session) {
-    return <button onClick={() => signIn()}>Sign In</button>;
+    return (
+      <button className="p-2" onClick={() => signIn()}>
+        Sign In
+      </button>
+    );
   }
 
   return (
@@ -20,6 +23,7 @@ export const AccountButton = () => {
 };
 
 export const Sidebar = () => {
+  const { data: session } = useSession();
   const [expanded, setExpanded] = useState(true);
 
   function toggleExpanded() {
@@ -88,18 +92,20 @@ export const Sidebar = () => {
           </svg>
         </button>
       </header>
-      <div className={`flex-1 ${expanded ? 'divide-y' : ''}`}>
-        {pages.map((page) => (
-          <Link key={page.id} href={page.link}>
-            <div className="w-full p-4 cursor-pointer hover:bg-slate-600">
-              {page.icon}
-              {expanded && <span className="ml-2">{page.name}</span>}
-            </div>
-          </Link>
-        ))}
-      </div>
+      {session && (
+        <div className={`flex-1 ${expanded ? 'divide-y' : ''}`}>
+          {pages.map((page) => (
+            <Link key={page.id} href={page.link}>
+              <div className="w-full p-4 cursor-pointer hover:bg-slate-600">
+                {page.icon}
+                {expanded && <span className="ml-2">{page.name}</span>}
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
       <div>
-        <AccountButton />
+        <AccountButton session={session} />
       </div>
     </section>
   );
