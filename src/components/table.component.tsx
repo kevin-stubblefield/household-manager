@@ -7,7 +7,9 @@ export function TableHeader({ columnHeaders }: { columnHeaders?: string[] }) {
         <thead>
           <tr>
             {columnHeaders.map((header) => (
-              <th className={cellClass}>{header}</th>
+              <th key={`header-${header}`} className={cellClass}>
+                {header}
+              </th>
             ))}
           </tr>
         </thead>

@@ -14,7 +14,14 @@ const TasksPage: NextPage = () => {
 
   const cellClass = 'border border-slate-500 p-2';
 
-  const columnHeaders = ['Task', 'Household', 'Assigned To', 'Priority', 'Due'];
+  const columnHeaders = [
+    'Task',
+    'Notes',
+    'Household',
+    'Assigned To',
+    'Priority',
+    'Due',
+  ];
 
   return (
     <MainLayout
@@ -30,6 +37,7 @@ const TasksPage: NextPage = () => {
               data.map((task) => (
                 <tr key={task.id}>
                   <td className={cellClass}>{task.name}</td>
+                  <td className={cellClass}>{task.notes}</td>
                   <td className={cellClass}>{task.household.name}</td>
                   <td className={cellClass}>
                     {task.user?.displayName ||

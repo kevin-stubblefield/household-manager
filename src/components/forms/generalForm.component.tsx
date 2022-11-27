@@ -52,7 +52,6 @@ export function GeneralForm<T extends inferMutationInput<TMutation>>({
                 ? React.createElement(child.type, {
                     ...{
                       ...child.props,
-                      register: methods.register,
                       key: child.props.name,
                     },
                   })
@@ -70,6 +69,7 @@ export function Input({
   labelText,
   placeholderText,
   registerOptions,
+  value,
   ...rest
 }: {
   type?: string;
@@ -77,6 +77,7 @@ export function Input({
   labelText?: string;
   placeholderText: string;
   registerOptions?: RegisterOptions;
+  value?: string;
 }) {
   const { register } = useFormContext();
   const { errors } = useFormState();
@@ -101,6 +102,49 @@ export function Input({
               value: 2,
               message: 'Field must be at least 2 characters',
             },
+          }
+        )}
+        {...rest}
+      />
+      {errors[name] && (
+        <span className="text-red-500 block">
+          {errors[name]?.message as string}
+        </span>
+      )}
+    </>
+  );
+}
+
+export function TextArea({
+  name,
+  labelText,
+  placeholderText,
+  registerOptions,
+  ...rest
+}: {
+  name: string;
+  labelText?: string;
+  placeholderText: string;
+  registerOptions?: RegisterOptions;
+}) {
+  const { register } = useFormContext();
+  const { errors } = useFormState();
+
+  return (
+    <>
+      {labelText && (
+        <label className="font-semibold text-sm mt-2 mb-0" htmlFor={name}>
+          {labelText}
+        </label>
+      )}
+      <textarea
+        id={name}
+        className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
+        placeholder={placeholderText}
+        {...register(
+          name,
+          registerOptions || {
+            required: 'Field is required',
           }
         )}
         {...rest}
