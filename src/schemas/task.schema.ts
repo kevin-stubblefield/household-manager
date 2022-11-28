@@ -6,9 +6,10 @@ export const createTaskSchema = z.object({
   name: z.string().min(2),
   householdId: z.string().cuid(),
   notes: z.string(),
-  priority: z.number().min(1).max(3).nullish().default(3),
-  dueDate: z.date().optional(),
-  assignedTo: z.string().optional(),
+  priority: z.number().min(1).max(3).optional().default(3),
+  dueDate: z.date().nullish(),
+  assignedTo: z.string().nullish(),
+  isRecurring: z.boolean().default(false),
 });
 
 export const updateTaskSchema = z.object({
@@ -27,14 +28,10 @@ export const deleteTaskSchema = z.object({
 export const createTaskRecurrenceSchema = z.object({
   recurrenceRule: z.string().optional(),
   frequency: frequencyEnum.optional().default('DAILY'),
-  interval: z.string().optional(),
+  interval: z.string().optional().default('1'),
   startTime: z.date().optional(),
   endTime: z.date().optional(),
-  byDate: z
-    .number()
-    .min(1)
-    .max(31)
-    .transform((val) => val.toString()),
+  byDate: z.string().min(1).max(31).optional(),
   byDay: z.string().min(2).max(3).optional(),
   duration: z.string().optional(),
   setAsBusy: z.boolean().optional().default(false),
@@ -76,3 +73,9 @@ export type UpdateTaskRecurrenceInput = z.TypeOf<
 export type DeleteTaskRecurrenceInput = z.TypeOf<
   typeof deleteTaskRecurrenceSchema
 >;
+
+export type TaskInputWithRecurrence = {
+  isRecurring: boolean;
+  task: CreateTaskInput;
+  recurrence: CreateTaskRecurrenceInput;
+};

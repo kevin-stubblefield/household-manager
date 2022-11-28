@@ -69,7 +69,7 @@ export function Input({
   labelText,
   placeholderText,
   registerOptions,
-  value,
+  onChange,
   ...rest
 }: {
   type?: string;
@@ -77,7 +77,7 @@ export function Input({
   labelText?: string;
   placeholderText?: string;
   registerOptions?: RegisterOptions;
-  value?: string;
+  onChange?: () => void;
 }) {
   const { register } = useFormContext();
   const { errors } = useFormState();
@@ -104,6 +104,7 @@ export function Input({
             },
           }
         )}
+        onChange={onChange}
         {...rest}
       />
       {errors[name] && (

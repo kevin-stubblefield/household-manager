@@ -34,7 +34,7 @@ export const Dropdown = ({
     >,
     void
   >;
-  options?: Option[];
+  options?: readonly Option[];
   registerOptions?: RegisterOptions;
 }) => {
   const { register, clearErrors } = useFormContext();

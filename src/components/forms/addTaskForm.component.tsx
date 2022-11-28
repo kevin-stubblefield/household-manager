@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { CreateTaskInput } from '../../schemas/task.schema';
+import {
+  CreateTaskInput,
+  CreateTaskRecurrenceInput,
+} from '../../schemas/task.schema';
 import { Dropdown } from './dropdown.component';
 import {
   GeneralForm,
@@ -10,11 +13,23 @@ import {
 
 export function AddTaskForm() {
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
+  const [showRecurringTaskForm, setShowRecurringTaskForm] = useState(false);
   const [selectedHousehold, setSelectedHousehold] = useState('');
 
   const toggleShowAddTaskForm = () => {
     setShowAddTaskForm(!showAddTaskForm);
   };
+
+  const toggleShowRecurringTaskForm = () => {
+    setShowRecurringTaskForm(!showRecurringTaskForm);
+  };
+
+  const frequencyOptions = [
+    { id: 'DAILY', name: 'Daily' },
+    { id: 'WEEKLY', name: 'Weekly' },
+    { id: 'MONTHLY', name: 'Monthly' },
+    { id: 'YEARLY', name: 'Yearly' },
+  ];
 
   return (
     <>
@@ -25,7 +40,7 @@ export function AddTaskForm() {
         {showAddTaskForm ? 'Hide' : 'Add Task'}
       </button>
       {showAddTaskForm && (
-        <GeneralForm<CreateTaskInput>
+        <GeneralForm<CreateTaskInput & CreateTaskRecurrenceInput>
           mutation="tasks.create-task"
           invalidateQuery="tasks.my-tasks"
         >
@@ -73,6 +88,33 @@ export function AddTaskForm() {
             labelText="Due Date"
             registerOptions={{ required: false, valueAsDate: true }}
           />
+          <Input
+            name="isRecurring"
+            type="checkbox"
+            labelText="Recurring?"
+            onChange={() => toggleShowRecurringTaskForm()}
+            registerOptions={{ required: false }}
+          />
+          {showRecurringTaskForm && (
+            <>
+              <Dropdown
+                name="frequency"
+                hasEmpty={false}
+                options={frequencyOptions}
+                registerOptions={{ required: false }}
+              />
+              <Input
+                name="interval"
+                placeholderText="1"
+                labelText="Interval"
+                registerOptions={{
+                  required: false,
+                  max: { value: 31, message: 'Must not be greater than 31' },
+                  min: { value: 1, message: 'Must not be less than 1' },
+                }}
+              />
+            </>
+          )}
           <SubmitButton text="Add New Task" />
         </GeneralForm>
       )}
