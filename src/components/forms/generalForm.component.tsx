@@ -75,7 +75,7 @@ export function Input({
   type?: string;
   name: string;
   labelText?: string;
-  placeholderText: string;
+  placeholderText?: string;
   registerOptions?: RegisterOptions;
   value?: string;
 }) {
@@ -93,7 +93,7 @@ export function Input({
         id={name}
         type={type || 'text'}
         className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
-        placeholder={placeholderText}
+        placeholder={placeholderText || labelText || ''}
         {...register(
           name,
           registerOptions || {

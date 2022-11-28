@@ -6,7 +6,7 @@ export const createTaskSchema = z.object({
   name: z.string().min(2),
   householdId: z.string().cuid(),
   notes: z.string(),
-  priority: z.number().min(1).max(3).optional().default(3),
+  priority: z.number().min(1).max(3).nullish().default(3),
   dueDate: z.date().optional(),
   assignedTo: z.string().optional(),
 });

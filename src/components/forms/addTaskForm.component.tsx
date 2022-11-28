@@ -57,15 +57,21 @@ export function AddTaskForm() {
           />
           <Input
             name="priority"
-            value="3"
             placeholderText="3"
             labelText="Priority"
             registerOptions={{
-              valueAsNumber: true,
+              setValueAs: (value: string) =>
+                value === '' ? undefined : +value,
               required: false,
               min: { value: 1, message: 'Cannot be lower than 1' },
               max: { value: 3, message: 'Cannot be higher than 3' },
             }}
+          />
+          <Input
+            name="dueDate"
+            type="date"
+            labelText="Due Date"
+            registerOptions={{ required: false, valueAsDate: true }}
           />
           <SubmitButton text="Add New Task" />
         </GeneralForm>
