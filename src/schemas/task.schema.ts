@@ -42,7 +42,7 @@ export const updateTaskRecurrenceSchema = z.object({
   id: z.string().cuid(),
   recurrenceRule: z.string().optional(),
   frequency: frequencyEnum.optional(),
-  interval: z.string().optional(),
+  interval: z.string().optional().default('1'),
   startTime: z.date().optional(),
   endTime: z.date().optional(),
   byDate: z

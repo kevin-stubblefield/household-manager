@@ -3,7 +3,7 @@ import {
   CreateTaskInput,
   CreateTaskRecurrenceInput,
 } from '../../schemas/task.schema';
-import { Dropdown } from './dropdown.component';
+import { Dropdown, Option } from './dropdown.component';
 import {
   GeneralForm,
   SubmitButton,
@@ -15,6 +15,7 @@ export function AddTaskForm() {
   const [showAddTaskForm, setShowAddTaskForm] = useState(false);
   const [showRecurringTaskForm, setShowRecurringTaskForm] = useState(false);
   const [selectedHousehold, setSelectedHousehold] = useState('');
+  const [selectedFrequency, setSelectedFrequency] = useState('');
 
   const toggleShowAddTaskForm = () => {
     setShowAddTaskForm(!showAddTaskForm);
@@ -27,8 +28,6 @@ export function AddTaskForm() {
   const frequencyOptions = [
     { id: 'DAILY', name: 'Daily' },
     { id: 'WEEKLY', name: 'Weekly' },
-    { id: 'MONTHLY', name: 'Monthly' },
-    { id: 'YEARLY', name: 'Yearly' },
   ];
 
   return (
@@ -101,17 +100,39 @@ export function AddTaskForm() {
                 name="frequency"
                 hasEmpty={false}
                 options={frequencyOptions}
+                onSelect={(e) => {
+                  setSelectedFrequency(e.currentTarget.value);
+                }}
                 registerOptions={{ required: false }}
               />
               <Input
                 name="interval"
                 placeholderText="1"
-                labelText="Interval"
+                labelText="Interval (Every # days/weeks)"
                 registerOptions={{
                   required: false,
                   max: { value: 31, message: 'Must not be greater than 31' },
                   min: { value: 1, message: 'Must not be less than 1' },
                 }}
+              />
+              {selectedFrequency === 'WEEKLY' && (
+                <Dropdown
+                  name="byDay"
+                  hasEmpty={false}
+                  options={getByDayOptions()}
+                />
+              )}
+              <Input
+                name="startDate"
+                type="date"
+                labelText="Start Date"
+                registerOptions={{ required: false, valueAsDate: true }}
+              />
+              <Input
+                name="endDate"
+                type="date"
+                labelText="End Date"
+                registerOptions={{ required: false, valueAsDate: true }}
               />
             </>
           )}
@@ -120,4 +141,17 @@ export function AddTaskForm() {
       )}
     </>
   );
+}
+
+function getByDayOptions(): Option[] {
+  let options: Option[] = [
+    { id: 'SU', name: 'Sunday' },
+    { id: 'MO', name: 'Monday' },
+    { id: 'TU', name: 'Tuesday' },
+    { id: 'WE', name: 'Wednesday' },
+    { id: 'TH', name: 'Thursday' },
+    { id: 'FR', name: 'Friday' },
+    { id: 'SA', name: 'Saturday' },
+  ];
+  return options;
 }
