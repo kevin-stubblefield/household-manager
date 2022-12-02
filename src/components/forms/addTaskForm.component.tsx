@@ -39,7 +39,9 @@ export function AddTaskForm() {
         {showAddTaskForm ? 'Hide' : 'Add Task'}
       </button>
       {showAddTaskForm && (
-        <GeneralForm<CreateTaskInput & CreateTaskRecurrenceInput>
+        <GeneralForm<
+          CreateTaskInput & CreateTaskRecurrenceInput & { isRecurring: boolean }
+        >
           mutation="tasks.create-task"
           invalidateQuery="tasks.my-tasks"
         >
@@ -123,13 +125,13 @@ export function AddTaskForm() {
                 />
               )}
               <Input
-                name="startDate"
+                name="startTime"
                 type="date"
                 labelText="Start Date"
                 registerOptions={{ required: false, valueAsDate: true }}
               />
               <Input
-                name="endDate"
+                name="endTime"
                 type="date"
                 labelText="End Date"
                 registerOptions={{ required: false, valueAsDate: true }}

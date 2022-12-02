@@ -9,7 +9,6 @@ export const createTaskSchema = z.object({
   priority: z.number().min(1).max(3).optional().default(3),
   dueDate: z.date().nullish(),
   assignedTo: z.string().nullish(),
-  isRecurring: z.boolean().default(false),
 });
 
 export const updateTaskSchema = z.object({
@@ -29,10 +28,10 @@ export const createTaskRecurrenceSchema = z.object({
   recurrenceRule: z.string().optional(),
   frequency: frequencyEnum.optional().default('DAILY'),
   interval: z.string().optional().default('1'),
-  startTime: z.date().optional(),
-  endTime: z.date().optional(),
+  startTime: z.date().nullish(),
+  endTime: z.date().nullish(),
   byDate: z.string().min(1).max(31).optional(),
-  byDay: z.string().min(2).max(3).optional(),
+  byDay: z.string().min(2).max(2).optional(),
   duration: z.string().optional(),
   setAsBusy: z.boolean().optional().default(false),
   isAllDay: z.boolean().optional().default(false),
@@ -50,7 +49,7 @@ export const updateTaskRecurrenceSchema = z.object({
     .min(1)
     .max(31)
     .transform((val) => val.toString()),
-  byDay: z.string().min(2).max(3).optional(),
+  byDay: z.string().min(2).max(2).optional(),
   duration: z.string().optional(),
   setAsBusy: z.boolean().optional(),
   isAllDay: z.boolean().optional(),

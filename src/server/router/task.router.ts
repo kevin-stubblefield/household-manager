@@ -2,6 +2,8 @@ import { createRouter } from './context';
 import z from 'zod';
 import { Prisma } from '@prisma/client';
 import {
+  CreateTaskInput,
+  CreateTaskRecurrenceInput,
   createTaskRecurrenceSchema,
   createTaskSchema,
 } from '../../schemas/task.schema';
@@ -62,12 +64,16 @@ export const taskRouter = createProtectedRouter()
     },
   })
   .mutation('create-task', {
-    input: z.intersection(createTaskSchema, createTaskRecurrenceSchema),
+    input: z.intersection(
+      z.intersection(createTaskSchema, createTaskRecurrenceSchema),
+      z.object({ isRecurring: z.boolean() })
+    ),
     async resolve({ input, ctx }) {
       if (!input.assignedTo) {
         input.assignedTo = null;
       }
 
+      let task;
       let recurrence;
       if (input.isRecurring) {
         recurrence = await prisma?.taskRecurrence.create({
@@ -84,19 +90,143 @@ export const taskRouter = createProtectedRouter()
             isAllDay: input.isAllDay,
           },
         });
+
+        if (recurrence?.id) {
+          let tasks = generateTaskSeries(input, recurrence?.id);
+          for (let task of tasks) {
+            await prisma?.task.create({
+              data: task,
+            });
+          }
+        }
+      } else {
+        task = await prisma?.task.create({
+          data: {
+            name: input.name,
+            householdId: input.householdId,
+            notes: input.notes,
+            priority: input.priority,
+            dueDate: input.dueDate,
+            assignedTo: input.assignedTo,
+          },
+        });
       }
-      const task = await prisma?.task.create({
-        data: {
-          name: input.name,
-          householdId: input.householdId,
-          notes: input.notes,
-          priority: input.priority,
-          dueDate: input.dueDate,
-          assignedTo: input.assignedTo,
-          recurrenceId: recurrence?.id,
-        },
-      });
 
       return task;
     },
   });
+
+const DayNumberMap = new Map([
+  ['SU', 0],
+  ['MO', 1],
+  ['TU', 2],
+  ['WE', 3],
+  ['TH', 4],
+  ['FR', 5],
+  ['SA', 6],
+]);
+
+function generateTaskSeries(
+  input: CreateTaskInput & CreateTaskRecurrenceInput,
+  recurrenceId: string
+): CreateTaskInput[] {
+  // the first date should be the first occurrence of a date after or equal to startDate
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  let firstDate = input.startTime || input.dueDate || now;
+
+  let tasks: CreateTaskInput[] = [];
+
+  if (!input.interval) {
+    input.interval = '1';
+  }
+
+  if (input.frequency === 'DAILY') {
+    let currentDate = firstDate;
+
+    if (input.endTime) {
+      while (currentDate <= input.endTime) {
+        let taskTemplate = {
+          name: input.name,
+          householdId: input.householdId,
+          notes: input.notes,
+          priority: input.priority,
+          dueDate: new Date(currentDate.valueOf()),
+          assignedTo: input.assignedTo,
+          recurrenceId: recurrenceId,
+        };
+        tasks.push(taskTemplate);
+
+        currentDate.setDate(currentDate.getDate() + parseInt(input.interval));
+      }
+    } else {
+      for (let i = 0; i < 10; i++) {
+        let taskTemplate = {
+          name: input.name,
+          householdId: input.householdId,
+          notes: input.notes,
+          priority: input.priority,
+          dueDate: new Date(currentDate.valueOf()),
+          assignedTo: input.assignedTo,
+          recurrenceId: recurrenceId,
+        };
+        tasks.push(taskTemplate);
+
+        currentDate.setDate(currentDate.getDate() + parseInt(input.interval));
+      }
+    }
+  } else if (
+    input.frequency === 'WEEKLY' &&
+    input.byDay &&
+    firstDate.getDay() !== DayNumberMap.get(input.byDay)
+  ) {
+    const daysFromNow = DayNumberMap.get(input.byDay) - firstDate.getDay();
+    if (daysFromNow < 0) {
+      const daysToAdd = 7 + daysFromNow;
+      firstDate.setDate(firstDate.getDate() + daysToAdd);
+    } else {
+      firstDate.setDate(firstDate.getDate() + daysFromNow);
+    }
+    let currentDate = firstDate;
+
+    if (input.endTime) {
+      while (currentDate <= input.endTime) {
+        let taskTemplate = {
+          name: input.name,
+          householdId: input.householdId,
+          notes: input.notes,
+          priority: input.priority,
+          dueDate: new Date(currentDate.valueOf()),
+          assignedTo: input.assignedTo,
+          recurrenceId: recurrenceId,
+        };
+        tasks.push(taskTemplate);
+
+        currentDate.setDate(
+          currentDate.getDate() + parseInt(input.interval) * 7
+        );
+      }
+    } else {
+      for (let i = 0; i < 10; i++) {
+        let taskTemplate = {
+          name: input.name,
+          householdId: input.householdId,
+          notes: input.notes,
+          priority: input.priority,
+          dueDate: new Date(currentDate.valueOf()),
+          assignedTo: input.assignedTo,
+          recurrenceId: recurrenceId,
+        };
+        tasks.push(taskTemplate);
+
+        currentDate.setDate(
+          currentDate.getDate() + parseInt(input.interval) * 7
+        );
+      }
+    }
+  }
+
+  console.log('TASKS: ', tasks);
+
+  return tasks;
+}
