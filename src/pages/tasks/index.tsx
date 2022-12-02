@@ -46,12 +46,9 @@ const TasksPage: NextPage = () => {
                   </td>
                   <td className={cellClass}>{task.priority}</td>
                   <td className={cellClass}>
-                    {task.dueDate
-                      ? new Date(
-                          task.dueDate.getTime() +
-                            task.dueDate.getTimezoneOffset() * 60 * 1000
-                        ).toLocaleDateString()
-                      : 'N/A'}
+                    {task.dueDate?.toLocaleDateString('en-US', {
+                      timeZone: 'UTC',
+                    }) || 'N/A'}
                   </td>
                 </tr>
               ))}
