@@ -22,7 +22,7 @@ export const MainLayout = ({
       )}
       <div className="flex">
         <Sidebar />
-        <div className="p-2 flex-1">{children}</div>
+        <div className="p-2 flex-1 bg-gray-900">{children}</div>
       </div>
     </>
   );

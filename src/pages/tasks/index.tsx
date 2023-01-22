@@ -12,7 +12,7 @@ const TasksPage: NextPage = () => {
     return <Loading />;
   }
 
-  const cellClass = 'border border-slate-500 p-2';
+  const cellClass = 'text-gray-300 p-4 text-center';
 
   const columnHeaders = [
     'Task',
@@ -30,7 +30,7 @@ const TasksPage: NextPage = () => {
     >
       <AddTaskForm />
       {data && data.length > 0 && (
-        <table className="border-collapse border border-slate-500 w-full">
+        <table className="border-separate border-spacing-y-1 w-full">
           <TableHeader columnHeaders={columnHeaders} />
           <tbody>
             {data &&

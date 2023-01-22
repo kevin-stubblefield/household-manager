@@ -1,11 +1,11 @@
 export function TableHeader({ columnHeaders }: { columnHeaders?: string[] }) {
-  const cellClass = 'border border-slate-500 p-2';
+  const cellClass = 'text-gray-300 p-4';
 
   return (
     <>
       {columnHeaders && (
         <thead>
-          <tr>
+          <tr className="bg-gray-800">
             {columnHeaders.map((header) => (
               <th key={`header-${header}`} className={cellClass}>
                 {header}
