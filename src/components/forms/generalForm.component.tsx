@@ -92,7 +92,7 @@ export function Input({
       <input
         id={name}
         type={type || 'text'}
-        className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
+        className="p-2 border-solid block border-slate-500 focus:border-slate-200 outline-none border-2 rounded transition-all duration-[200ms] bg-slate-700"
         placeholder={placeholderText || labelText || ''}
         {...register(
           name,
@@ -140,7 +140,7 @@ export function TextArea({
       )}
       <textarea
         id={name}
-        className="p-2 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms]"
+        className="p-2 border-solid block border-slate-500 focus:border-slate-200 outline-none border-2 rounded transition-all duration-[200ms] bg-slate-700"
         placeholder={placeholderText}
         {...register(
           name,
@@ -162,7 +162,7 @@ export function TextArea({
 export function SubmitButton({ text }: { text: string }) {
   return (
     <button
-      className="p-2 mb-2 text-slate-100 bg-green-600 rounded block shadow-md hover:bg-green-500 transition-all duration-[250ms]"
+      className="p-2 mb-2 text-slate-100 bg-green-900 rounded block shadow-md hover:bg-green-700 transition-all duration-[250ms]"
       type="submit"
     >
       {text}

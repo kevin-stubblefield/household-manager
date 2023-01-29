@@ -73,7 +73,7 @@ export const Dropdown = ({
 
           clearErrors(name);
         }}
-        className="p-1 border-solid block border-slate-200 focus:border-slate-500 outline-none border-2 rounded transition-all duration-[200ms] h-12"
+        className="p-1 border-solid block border-slate-500 focus:border-slate-200 outline-none border-2 rounded transition-all duration-[200ms] h-12 bg-slate-700"
       >
         {hasEmpty && (
           <option key={`${name}-dropdown-any`} value="">
