@@ -6,6 +6,7 @@ import {
   CreateTaskRecurrenceInput,
   createTaskRecurrenceSchema,
   createTaskSchema,
+  updateTaskSchema,
 } from '../../schemas/task.schema';
 import { createProtectedRouter } from './protected-router';
 
@@ -113,6 +114,27 @@ export const taskRouter = createProtectedRouter()
       }
 
       return task;
+    },
+  })
+  .mutation('update-task', {
+    input: updateTaskSchema,
+    async resolve({ input }) {
+      await prisma?.task.update({
+        where: {
+          id: input.id,
+        },
+        data: input,
+      });
+    },
+  })
+  .mutation('delete-task', {
+    input: z.object({ taskId: z.string() }),
+    async resolve({ input }) {
+      await prisma?.task.delete({
+        where: {
+          id: input.taskId,
+        },
+      });
     },
   });
 
